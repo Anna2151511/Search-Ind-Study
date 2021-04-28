@@ -1,0 +1,3 @@
+public class firstSearch(){
+  System.out.print("Hello!");
+}
