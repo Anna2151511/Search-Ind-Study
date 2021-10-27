@@ -1,0 +1,206 @@
+package practiceSearch;
+import info.debatty.java.stringsimilarity.*; //Import string similarity
+import java.lang.reflect.Array;
+
+//imports to display images
+import java.awt.BorderLayout;
+import java.awt.Image;
+import java.io.IOException;
+import java.net.URL;
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import java.util.*;
+
+//imports to play video
+import java.awt.Desktop;
+import java.net.URI;
+import java.net.URISyntaxException;
+
+public class SearchOne {
+
+	// function to display image
+	static void displayImage(String link) {
+		 Image image = null;
+	        
+	        try {
+	            URL url = new URL(link);
+	            image = ImageIO.read(url);  
+	        } 
+	        catch (IOException e) {
+	        }
+	   
+	     // Use a label to display the image
+ 		JFrame frame = new JFrame();
+         JLabel lblimage = new JLabel(new ImageIcon(image));
+         frame.getContentPane().add(lblimage, BorderLayout.CENTER);
+         frame.setSize(300, 400);
+         frame.setVisible(true);
+         
+         JPanel mainPanel = new JPanel(new BorderLayout());
+         mainPanel.add(lblimage);
+    
+         // add more components here
+         frame.add(mainPanel);
+         frame.setVisible(true);
+	}
+	
+	//connect 2 arrays
+	static int findIndex(char[] arrayName, int x, char[] inputArray) {
+		int index = 0;
+		while(arrayName[x] != (inputArray[index])) {
+			index ++;
+		}
+		return index;
+	}
+	
+	//function to open webpage
+	static void openVideo(String link) {
+		// Create Desktop object
+        Desktop r=Desktop.getDesktop();
+
+		try {
+			r.browse(new URI(link));
+        } catch (URISyntaxException e) {
+        	e.printStackTrace();
+        } catch (IOException f) {
+        	f.printStackTrace();
+        }
+	}
+
+	
+	//main function
+	public static void main(String[] args) {
+		
+		
+		//alphabet and dictionary arrays
+		String[] signAlphabet = {"https://www.lifeprint.com/asl101/fingerspelling/abc-gifs/a_small.gif", "https://www.lifeprint.com/asl101/fingerspelling/abc-gifs/b_small.gif", "https://www.lifeprint.com/asl101/fingerspelling/abc-gifs/c_small.gif", "https://www.lifeprint.com/asl101/fingerspelling/abc-gifs/d_small.gif", "https://www.lifeprint.com/asl101/fingerspelling/abc-gifs/e_small.gif", "https://www.lifeprint.com/asl101/fingerspelling/abc-gifs/f_small.gif", "https://www.lifeprint.com/asl101/fingerspelling/abc-gifs/g_small.gif", "https://www.lifeprint.com/asl101/fingerspelling/abc-gifs/h_small.gif", "https://www.lifeprint.com/asl101/fingerspelling/abc-gifs/i_small.gif", "https://www.lifeprint.com/asl101/fingerspelling/abc-gifs/j_small.gif", "https://www.lifeprint.com/asl101/fingerspelling/abc-gifs/k_small.gif", "https://www.lifeprint.com/asl101/fingerspelling/abc-gifs/l_small.gif", "https://www.lifeprint.com/asl101/fingerspelling/abc-gifs/m_small.gif", "https://www.lifeprint.com/asl101/fingerspelling/abc-gifs/n_small.gif", "https://www.lifeprint.com/asl101/fingerspelling/abc-gifs/o_small.gif", "https://www.lifeprint.com/asl101/fingerspelling/abc-gifs/p_small.gif", "https://www.lifeprint.com/asl101/fingerspelling/abc-gifs/q_small.gif", "https://www.lifeprint.com/asl101/fingerspelling/abc-gifs/r_small.gif", "https://www.lifeprint.com/asl101/fingerspelling/abc-gifs/s_small.gif", "https://www.lifeprint.com/asl101/fingerspelling/abc-gifs/t_small.gif", "https://www.lifeprint.com/asl101/fingerspelling/abc-gifs/u_small.gif", "https://www.lifeprint.com/asl101/fingerspelling/abc-gifs/v_small.gif", "https://www.lifeprint.com/asl101/fingerspelling/abc-gifs/w_small.gif", "https://www.lifeprint.com/asl101/fingerspelling/abc-gifs/x_small.gif", "https://www.lifeprint.com/asl101/fingerspelling/abc-gifs/y_small.gif", "https://www.lifeprint.com/asl101/fingerspelling/abc-gifs/z_small.gif"};
+		char[] letterAlphabet = {'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'};
+		int globalIndex = -1;        
+		String[] Dictionary = {"again", "also", "ask", "boy", "but", "can", "come", "deaf"};
+		String[] signDictionary = {"https://youtu.be/wTNv94AY-yE", "https://youtu.be/cnX45VWbjmc", "https://youtu.be/GtzG1RpF_E4", "https://youtu.be/E-wBrs3PJhU", "https://youtu.be/l3pElzy2Png", "https://youtu.be/TDN9SnM7xgQ", "https://youtu.be/utAS6HfhNuQ", "https://youtu.be/zW8cpOVeKZ4"};
+		
+		
+		// introductory if statement
+		Scanner wordLetter = new Scanner(System.in);
+		System.out.println("Do you want finger spelling or a sign?");
+		String userChoice = wordLetter.nextLine();
+		String condit = "null";
+		boolean newSearch = false;
+		
+		if(userChoice != condit) {
+			newSearch = true;
+			condit = userChoice;
+				
+		}
+		
+		while (newSearch = true) {
+		
+		//Determine which option is closest to the user input
+		Levenshtein introDist = new Levenshtein();
+		double fingSpellDist = introDist.distance(userChoice, "finger spelling");
+		double spellDist = introDist.distance(userChoice, "spelling");
+		double signDist = introDist.distance(userChoice, "sign");
+		
+		//if user input is closest to 'spelling'
+		if(spellDist < signDist || fingSpellDist < signDist) {
+			Scanner inputWord = new Scanner(System.in);
+			System.out.println("What word do you want to spell?");
+			String userWord = inputWord.nextLine();
+			char[] letters = userWord.toCharArray();
+			int length = letters.length;
+			
+			//display picture
+			ArrayList<Integer> backwardIndex = new ArrayList<Integer>(0);
+			
+			for(int x = 0; x < letters.length; x++) {
+				globalIndex = findIndex(letters, x, letterAlphabet);	
+
+				backwardIndex.add(0, globalIndex);
+			}
+			
+			//display images in correct order
+			for(int i = 0; i < backwardIndex.size(); i++) {
+				displayImage(signAlphabet[backwardIndex.get(i)]);
+			}
+			
+	        	       
+		//if user input is closest to 'sign'	
+		} else if (signDist < spellDist || signDist < fingSpellDist) {
+			
+			//collects the word the user wants a sign for
+			Levenshtein v = new Levenshtein();
+			Scanner input = new Scanner(System.in);
+			System.out.println("Enter a String");
+			String userSearch = input.nextLine();
+			
+			ArrayList<Double> dist = new ArrayList<>();
+			for(int i = 0; i < Dictionary.length; i++) {
+				double temp = v.distance(userSearch, Dictionary[i]);
+				dist.add(temp);
+			}
+			
+			
+			System.out.println("");
+			
+			//compare the distance between the user input and each word in the dictionary
+			//reorders both of the dictionaries to put the user's word in front
+			for(int x = 0; x < dist.size(); x++) {
+				for(int y = x+1; y < dist.size(); y++) {
+					if(dist.get(x) > dist.get(y)) {
+						//set up distance min to max
+						double temp = dist.get(x);
+						dist.set(x, dist.get(y));
+						dist.set(y, temp);
+						//set up titles
+						String tempString = Dictionary[x];
+						Dictionary[x] = Dictionary[y];
+						Dictionary[y] = tempString;
+						//set up content
+						tempString = signDictionary[x];
+						signDictionary[x] = signDictionary[y];
+						signDictionary[y] = tempString;
+					}
+				}
+				
+			}
+			
+			if(dist.get(0) == dist.get(1)) {
+				if(v.distance(userSearch, signDictionary[0]) < v.distance(userSearch, signDictionary[1])) {
+					int x = 0;
+					int y = 1;
+					//set dist.
+					double temp = dist.get(y);
+					dist.set(x, dist.get(y));
+					dist.set(y, temp);
+					//set up titles
+					String tempString = Dictionary[x];
+					Dictionary[x] = Dictionary[y];
+					Dictionary[y] = tempString;
+					//set up content
+					tempString = signDictionary[x];
+					signDictionary[x] = signDictionary[y];
+					signDictionary[y] = tempString;
+				}
+			}
+		// if the user's word isn't in the dictionary
+			if(userSearch != Dictionary[0]) {
+				System.out.println("Did you mean " + Dictionary[0] + "?");
+			}
+			openVideo(signDictionary[0]);
+			
+		
+			//if user input is equal distance from 'spelling' and 'sign'
+			} else {
+				System.out.println("Do you want finger spelling or a sign?");
+				System.out.println("Please clearly state if you want a finger spelling or sign");
+
+			}
+		System.out.println("Do you want finger spelling or a sign?");
+		userChoice = wordLetter.nextLine();
+		}
+	}
+
+}
